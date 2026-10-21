@@ -1,47 +1,95 @@
+<div align="center">
+
 # DesktopTimer
 
-macOS の画面の右上に浮かぶ、小さな作業タイマー。
-全画面のアプリや他の窓より上に出続けるので、何をしていても残り時間が目に入る。
+**画面の右上に浮かぶ、小さな作業タイマー**
 
-## できること
+全画面のアプリの上にも出続けるので、何をしていても残り時間が目に入る。
 
-- 残り時間を常に最前面に表示する。全画面アプリの上や、どのデスクトップにも出る
-- 「やることを入力」に、この時間でやることを1行メモできる
-- 時間は数字を打つか、15分・30分・60分のボタンで決める
-- 「時刻」ボタンで、指定の時刻までを数える
-- 0になると、すべての画面を赤く覆って知らせる
-- 早く終わったら完了ボタンで、かかった時間を添えてお祝いする
-- 「−」で小さな丸にたためる。丸の縁に進み具合が出る
-- 背景色16色と透明度を選べる
-- どこを掴んでも運べる。画面の端に寄せると押し戻される
-- ログイン時に自動で起動する
+![macOS 14+](https://img.shields.io/badge/macOS-14%2B-5b6ee1?style=flat-square&logo=apple&logoColor=white)
+![Apple Silicon / Intel](https://img.shields.io/badge/Apple%20Silicon%20%2F%20Intel-OK-9b6bd3?style=flat-square)
+![Swift](https://img.shields.io/badge/Swift-SwiftUI-f08d5d?style=flat-square&logo=swift&logoColor=white)
+[![Release](https://img.shields.io/github/v/release/totsukash/desktop-timer?style=flat-square&color=e0607e)](https://github.com/totsukash/desktop-timer/releases/latest)
 
-## 動く環境
+<img src="docs/images/hero.png" width="760" alt="画面の右上に浮かぶタイマー">
 
-- macOS 14 Sonoma 以降
-- Apple シリコンと Intel のどちらでも動く
+</div>
 
 ## 入れ方
 
-ターミナルに次の1行を貼って実行する。
+ターミナルに1行貼るだけ。
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/totsukash/desktop-timer/main/install.sh | bash
 ```
 
-次のことを自動でする。
+- `~/Applications` に入り、すぐ起動する
+- 次からはログインしたときに自動で起動する
+- 更新するときも同じ1行
 
-- 最新の配布版をダウンロードし、`~/Applications/DesktopTimer.app` に置く
-- ログイン時に起動するよう `~/Library/LaunchAgents/com.totsukash.desktop-timer.plist` を置く
-- アプリを起動する
+## 使い方
 
-更新するときも同じ1行を実行する。
-初回に「バックグラウンド項目が追加されました」と出るのは、ログイン時の起動を登録したため。
+### 1. 時間を決めて始める
+
+<img src="docs/images/input.png" width="600" alt="時間と時刻の入力">
+
+| やりたいこと | 操作 |
+| --- | --- |
+| 25分はかる | 大きな数字を押して `25` → Enter |
+| 1分30秒はかる | `1:30` → Enter |
+| 8時まではかる | 「時刻」を押して `8:00` → Enter |
+| すぐ始める | 「15分」「30分」「60分」を押して ▶ |
+
+上の「やることを入力」に、この時間でやることをメモできる。
+
+### 2. どこを掴んでも運べる
+
+<img src="docs/images/carry.png" width="420" alt="掴んで運ぶ">
+
+文字やボタンの上からでも掴める。
+持ち上げると少し縮み、振った向きに傾く。
+
+### 3. 時間になったら
+
+<img src="docs/images/finished.png" width="600" alt="時間切れの画面">
+
+すべての画面が赤くなって知らせる。
+「OK」か Enter で閉じる。
+
+### 4. 早く終わったら
+
+<img src="docs/images/celebration.png" width="600" alt="完了のお祝い">
+
+✓ の完了ボタンで、かかった時間を添えてお祝いする。
+
+### 5. 色を変える・小さくたたむ
+
+<img src="docs/images/themes.png" width="760" alt="背景色の例">
+
+<img src="docs/images/settings.png" width="520" alt="設定と小さくたたんだ丸">
+
+- 歯車のボタンで、背景色16色と透明度を選べる
+- 「−」で小さな丸にたためる。丸の縁に進み具合が出て、押すと元に戻る
+
+### 終了
+
+背景を右クリックして「終了」。
+
+## 消し方
+
+```sh
+launchctl unload ~/Library/LaunchAgents/com.totsukash.desktop-timer.plist 2>/dev/null
+rm -f ~/Library/LaunchAgents/com.totsukash.desktop-timer.plist
+pkill -x DesktopTimer
+rm -rf ~/Applications/DesktopTimer.app
+```
+
+<details>
+<summary><b>開発者向け</b></summary>
 
 ### ソースからビルドして入れる
 
 Xcode か Command Line Tools が要る。
-入っていなければ `xcode-select --install` で入れる。
 
 ```sh
 git clone https://github.com/totsukash/desktop-timer.git
@@ -49,64 +97,22 @@ cd desktop-timer
 ./install.sh
 ```
 
-リポジトリの中で `./install.sh` を実行すると、ダウンロードせず手元でビルドしたものを入れる。
+リポジトリの中で `./install.sh` を実行すると、手元でビルドしたものを入れる。
 
 ### 配布版を出す
 
 ```sh
-./release.sh v1.0.0
+./release.sh v1.0.1
 ```
 
 Apple シリコンと Intel の両方で動く版を作り、GitHub のリリースに上げる。
 
-## 使い方
-
-### 時間を決めて始める
-
-- 大きな数字を押して時間を打ち、Enter で始まる
-  - `25` で25分
-  - `1:30` で1分30秒
-  - `1:00:00` で1時間
-- 「15分」「30分」「60分」を押すと、その時間がセットされる
-- 「時刻」を押して `8:00` や `830` を打つと、その時刻までを数える
-- 下の段のボタンは、左からリセット・開始/一時停止・完了
-
-### やることのメモ
-
-- 上の「やることを入力」を押して打ち、Enter で決まる
-- 時間切れの画面と、完了のお祝いにも表示される
-
-### 時間切れ
-
-- すべての画面が赤くなる
-- 「OK」か Enter で閉じる
-- 閉じるまでは、残り時間が赤字で出続ける
-
-### 小さくたたむ
-
-- 右上の「−」で、小さな丸になる
-- 丸を押すと元に戻る
-
-### 設定
-
-- 歯車のボタンで開く
-- 背景色と透明度を選べる。選んだ値は次に起動したときも使う
-
-### 移動
-
-- 文字やボタンの上も含め、どこを掴んでも運べる
-- 入力中の欄と透明度のつまみの上だけは、文字選びとつまみの操作になる
-- 置いた位置は覚えていて、次に起動したときもそこに出る
-
-### 終了
-
-- 背景を右クリックして「終了」、または設定の「終了」
-
-## 消し方
+### README の画像を撮り直す
 
 ```sh
-launchctl unload ~/Library/LaunchAgents/com.totsukash.desktop-timer.plist 2>/dev/null
-rm ~/Library/LaunchAgents/com.totsukash.desktop-timer.plist
-pkill -x DesktopTimer
-rm -rf ~/Applications/DesktopTimer.app
+swift build -c release
+DESKTOP_TIMER_SNAPSHOT=docs/images .build/release/DesktopTimer
+defaults delete DesktopTimer
 ```
+
+</details>

@@ -12,8 +12,12 @@ enum Main {
         let app = NSApplication.shared
         let cid = CGSDefaultConnection()
         _ = CGSSetConnectionProperty(cid, cid, "SetsCursorInBackground" as CFString, kCFBooleanTrue)
-        app.delegate = delegate
         app.setActivationPolicy(.accessory)
+        if let dir = ProcessInfo.processInfo.environment["DESKTOP_TIMER_SNAPSHOT"] {
+            DispatchQueue.main.async { Snapshot.run(to: URL(fileURLWithPath: dir)) }
+        } else {
+            app.delegate = delegate
+        }
         app.run()
     }
 }
