@@ -14,7 +14,7 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS"
 cp .build/release/DesktopTimer "$APP/Contents/MacOS/"
 cp Resources/Info.plist "$APP/Contents/"
-# 作り直してもカレンダー権限を聞き直されないよう、署名の照合をアプリのIDだけにする
+# 作り直してもmacの権限の許可を聞き直されないよう、署名の照合をアプリのIDだけにする
 codesign --force --sign - -r='designated => identifier "com.totsukash.desktop-timer"' "$APP"
 
 mkdir -p "$HOME/Library/LaunchAgents"

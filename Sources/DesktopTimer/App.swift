@@ -183,7 +183,8 @@ final class FloatingPanel: NSPanel {
 
         if moved {
             lift(false)
-            NSCursor.openHand.set()
+            // 画面の端で引っぱった後は、窓の外で離すこともある
+            (frame.contains(NSEvent.mouseLocation) ? NSCursor.openHand : NSCursor.arrow).set()
         }
         // トラックパッドのクリックは数px揺れるので、短く小さい動きはクリックとみなす
         let quick = CACurrentMediaTime() - startTime < 0.35
