@@ -407,6 +407,10 @@ final class DragAreaView: NSView {
     override func mouseDown(with event: NSEvent) {
         // 入力欄の外を押したら入力欄から外し、打った値を確定させる
         if let window, window.isKeyWindow { window.makeFirstResponder(self) }
+    }
+
+    // 押した時点で戻すと、離した合図が戻った後の「−」に届いて、またたたまれる
+    override func mouseUp(with event: NSEvent) {
         onClick?()
     }
 
