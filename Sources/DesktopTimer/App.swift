@@ -594,7 +594,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             w.orderFrontRegardless()
             return w
         }
-        NSSound(named: "Hero")?.play()
         DispatchQueue.main.asyncAfter(deadline: .now() + CelebrationView.duration) { [weak self] in
             self?.celebrationWindows.forEach { $0.orderOut(nil) }
             self?.celebrationWindows = []
@@ -740,14 +739,7 @@ final class TimerModel: ObservableObject {
     private func tick() {
         guard let endDate else { return }
         remaining = endDate.timeIntervalSinceNow
-        if remaining <= 0 && !alerted {
-            alerted = true
-            for i in 0..<3 {
-                DispatchQueue.main.asyncAfter(deadline: .now() + Double(i) * 0.7) {
-                    NSSound(named: "Glass")?.play()
-                }
-            }
-        }
+        if remaining <= 0 && !alerted { alerted = true }
     }
 }
 

@@ -9,7 +9,7 @@ macOS の画面の右上に浮かぶ、小さな作業タイマー。
 - 「やることを入力」に、この時間でやることを1行メモできる
 - 時間は数字を打つか、15分・30分・60分のボタンで決める
 - 「時刻」ボタンで、指定の時刻までを数える
-- 0になると、すべての画面を赤く覆って音で知らせる
+- 0になると、すべての画面を赤く覆って知らせる
 - 早く終わったら完了ボタンで、かかった時間を添えてお祝いする
 - 「−」で小さな丸にたためる。丸の縁に進み具合が出る
 - 背景色16色と透明度を選べる
@@ -19,11 +19,29 @@ macOS の画面の右上に浮かぶ、小さな作業タイマー。
 ## 動く環境
 
 - macOS 14 Sonoma 以降
-- Xcode か Command Line Tools。入っていなければ `xcode-select --install` で入れる
+- Apple シリコンと Intel のどちらでも動く
 
-## ダウンロードと入れ方
+## 入れ方
 
-ビルド済みのアプリは配っていないので、手元でビルドして入れる。
+ターミナルに次の1行を貼って実行する。
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/totsukash/desktop-timer/main/install.sh | bash
+```
+
+次のことを自動でする。
+
+- 最新の配布版をダウンロードし、`~/Applications/DesktopTimer.app` に置く
+- ログイン時に起動するよう `~/Library/LaunchAgents/com.totsukash.desktop-timer.plist` を置く
+- アプリを起動する
+
+更新するときも同じ1行を実行する。
+初回に「バックグラウンド項目が追加されました」と出るのは、ログイン時の起動を登録したため。
+
+### ソースからビルドして入れる
+
+Xcode か Command Line Tools が要る。
+入っていなければ `xcode-select --install` で入れる。
 
 ```sh
 git clone https://github.com/totsukash/desktop-timer.git
@@ -31,15 +49,15 @@ cd desktop-timer
 ./install.sh
 ```
 
-`install.sh` は次のことをする。
+リポジトリの中で `./install.sh` を実行すると、ダウンロードせず手元でビルドしたものを入れる。
 
-- `swift build -c release` でビルドする
-- `~/Applications/DesktopTimer.app` に置く
-- `~/Library/LaunchAgents/com.totsukash.desktop-timer.plist` を置き、ログイン時に起動するよう登録する
-- アプリを起動する
+### 配布版を出す
 
-更新するときは `git pull` してから、もう一度 `./install.sh` を実行する。
-初回に「バックグラウンド項目が追加されました」と出るのは、ログイン時の起動を登録したため。
+```sh
+./release.sh v1.0.0
+```
+
+Apple シリコンと Intel の両方で動く版を作り、GitHub のリリースに上げる。
 
 ## 使い方
 
@@ -60,7 +78,7 @@ cd desktop-timer
 
 ### 時間切れ
 
-- すべての画面が赤くなり、音が3回鳴る
+- すべての画面が赤くなる
 - 「OK」か Enter で閉じる
 - 閉じるまでは、残り時間が赤字で出続ける
 
